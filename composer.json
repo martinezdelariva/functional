@@ -16,7 +16,9 @@
       "pattern match"
   ],
   "require": {
-    "php" : ">=7.1",
+    "php" : ">=7.1"
+  },
+  "require-dev": {
     "phpunit/phpunit": "^6.0"
   },
   "autoload": {
