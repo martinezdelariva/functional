@@ -1,0 +1,32 @@
+{
+  "name": "martinezdelariva/functional",
+  "description": "Syntax enhancement operators of functional programming",
+  "license": "MIT",
+  "authors": [
+      {
+          "name": "José Luis Martínez de la Riva",
+          "email": "martinezdelariva@gmail.com",
+          "homepage": "http://martinezdelariva.com"
+      }
+  ],
+  "keywords": [
+      "functional",
+      "curry",
+      "pipe",
+      "pattern match"
+  ],
+  "require": {
+    "php" : ">=7.1",
+    "phpunit/phpunit": "^6.0"
+  },
+  "autoload": {
+    "files": [
+      "src/Functional/Curry.php",
+      "src/Functional/Match.php",
+      "src/Functional/Pipe.php"
+    ]
+  },
+  "scripts" : {
+    "test" : "vendor/bin/phpunit"
+  }
+}

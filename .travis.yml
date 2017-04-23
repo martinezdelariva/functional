@@ -1,0 +1,14 @@
+language: php
+php:
+  - '7.1'
+  - hhvm
+
+matrix:
+  allow_failures:
+    - php: hhvm
+
+before_script:
+  - php composer.phar install
+
+script:
+  - php composer.phar test

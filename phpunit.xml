@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ (c) José Luis Martínez de la Riva <martinezdelariva@gmail.com>
+  ~
+  ~  For the full copyright and license information, please view the LICENSE file
+  ~  that was distributed with this source code.
+  -->
+
+<phpunit bootstrap="./vendor/autoload.php" colors="true">
+    <testsuites>
+        <testsuite name="Martinezdelariva\\Functional Tests">
+            <directory>./test</directory>
+        </testsuite>
+    </testsuites>
+
+    <filter>
+        <whitelist addUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./src</directory>
+        </whitelist>
+    </filter>
+</phpunit>
