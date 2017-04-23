@@ -1,5 +1,7 @@
 # Functional
 
+[![Build Status](https://travis-ci.org/martinezdelariva/functional.svg?branch=master)](https://travis-ci.org/martinezdelariva/functional)
+
 Syntax enhancement operators of functional programming:
 
 * Curry
