@@ -101,6 +101,18 @@ class CurryTest extends TestCase
         $this->assertEquals(-1, $minus(3));
     }
 
+    /**
+     * @dataProvider variadicSumProvider
+     *
+     * @param callable $callable
+     */
+    public function test_with_variadic_arguments(callable $callable)
+    {
+        $curried = curry($callable);
+
+        $this->assertEquals(9, $curried(2, 3, 4));
+    }
+
     public function minusProvider()
     {
         return [
@@ -172,6 +184,30 @@ class CurryTest extends TestCase
             ]
         ];
     }
+
+    public function variadicSumProvider()
+    {
+        return [
+            [
+                sum::class
+            ],
+            [
+                [Operations::class, 'sum']
+            ],
+            [
+                function (... $sum) {
+                    return sum(... $sum);
+                }
+            ],
+            [
+                new class() {
+                    public function __invoke(... $sum) {
+                        return sum(... $sum);
+                    }
+                }
+            ]
+        ];
+    }
 }
 
 class Operations
@@ -190,6 +226,11 @@ class Operations
     {
         return add3($one, $two, $three);
     }
+
+    public static function sum(... $sum)
+    {
+        return sum(... $sum);
+    }
 }
 
 function add2($one, $other) {
@@ -202,4 +243,8 @@ function add3($one, $two, $three) {
 
 function minus($one, $other) {
     return $one - $other;
+};
+
+function sum(... $sum) {
+    return array_sum($sum);
 };

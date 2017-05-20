@@ -23,7 +23,7 @@ function curry(callable $callable, ... $params)
     $numOfCallableParameters = (new \ReflectionFunction($closure))->getNumberOfParameters();
     $numOfCurrentParameters  = count($params);
 
-    if ($numOfCallableParameters === $numOfCurrentParameters) {
+    if ($numOfCallableParameters <= $numOfCurrentParameters) {
         return $callable(... $params);
     }
 
