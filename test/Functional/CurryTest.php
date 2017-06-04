@@ -10,8 +10,10 @@ declare(strict_types = 1);
 
 namespace Martinezdelariva\Tests\Functional;
 
-use PHPUnit\Framework\TestCase;
 use function Martinezdelariva\Functional\curry;
+use function Martinezdelariva\Functional\curry_left;
+use function Martinezdelariva\Functional\curry_right;
+use PHPUnit\Framework\TestCase;
 
 class CurryTest extends TestCase
 {
@@ -22,9 +24,9 @@ class CurryTest extends TestCase
      */
     public function test_providing_first_param(callable $callable)
     {
-        $add1 = curry($callable, 1);
-
-        $this->assertEquals(3, $add1(2));
+        $this->assertEquals(3, curry($callable, 1)(2));
+        $this->assertEquals(3, curry_left($callable, 1)(2));
+        $this->assertEquals(3, curry_right($callable, 1)(2));
     }
 
     /**
@@ -34,10 +36,9 @@ class CurryTest extends TestCase
      */
     public function test_providing_no_params(callable $callable)
     {
-        $add  = curry($callable);
-        $add1 = $add(1);
-
-        $this->assertEquals(3, $add1(2));
+        $this->assertEquals(3, curry($callable)(1)(2));
+        $this->assertEquals(3, curry_left($callable)(1)(2));
+        $this->assertEquals(3, curry_right($callable)(1)(2));
     }
 
     /**
@@ -47,9 +48,9 @@ class CurryTest extends TestCase
      */
     public function test_providing_all_params(callable $callable)
     {
-        $result = curry($callable, 1, 2);
-
-        $this->assertEquals(3, $result);
+        $this->assertEquals(3, curry($callable, 1, 2));
+        $this->assertEquals(3, curry_left($callable, 1, 2));
+        $this->assertEquals(3, curry_right($callable, 1, 2));
     }
 
     /**
@@ -59,9 +60,9 @@ class CurryTest extends TestCase
      */
     public function test_provide_2_params_to_3_arity_function(callable $callable)
     {
-        $add3 = curry($callable, 1, 2);
-
-        $this->assertEquals(6, $add3(3));
+        $this->assertEquals(6, curry($callable, 1, 2)(3));
+        $this->assertEquals(6, curry_left($callable, 1, 2)(3));
+        $this->assertEquals(6, curry_right($callable, 1, 2)(3));
     }
 
     /**
@@ -71,10 +72,9 @@ class CurryTest extends TestCase
      */
     public function test_provide_1_param_to_3_arity_function_and_rest_params_sequentially(callable $callable)
     {
-        $add1 = curry($callable, 1);
-        $add3 = $add1(2);
-
-        $this->assertEquals(6, $add3(3));
+        $this->assertEquals(6, curry($callable, 1)(2)(3));
+        $this->assertEquals(6, curry_left($callable, 1)(2)(3));
+        $this->assertEquals(6, curry_right($callable, 1)(2)(3));
     }
 
     /**
@@ -84,9 +84,9 @@ class CurryTest extends TestCase
      */
     public function test_provide_1_param_to_3_arity_function_and_rest_params_at_once(callable $callable)
     {
-        $add1 = curry($callable, 1);
-
-        $this->assertEquals(6, $add1(2, 3));
+        $this->assertEquals(6, curry($callable, 1)(2, 3));
+        $this->assertEquals(6, curry_left($callable, 1)(2, 3));
+        $this->assertEquals(6, curry_right($callable, 1)(2, 3));
     }
 
     /**
@@ -96,9 +96,9 @@ class CurryTest extends TestCase
      */
     public function test_that_order_of_params_matters(callable $callable)
     {
-        $minus = curry($callable, 2);
-
-        $this->assertEquals(-1, $minus(3));
+        $this->assertEquals(-1, curry($callable, 2)(3));
+        $this->assertEquals(-1, curry_left($callable, 2)(3));
+        $this->assertEquals(1, curry_right($callable, 2)(3));
     }
 
     /**

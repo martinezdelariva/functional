@@ -11,6 +11,9 @@ Syntax enhancement operators of functional programming:
 At the moment there are plans to include [curry](https://wiki.php.net/rfc/currying) and [pipe](https://wiki.php.net/rfc/pipe-operator) as PHP functions.
 Meanwhile you can use this library for fun!
 
+Notes:
+* `curry` doesn't know if a function with optional params won't be provided. So, `curry` only runs the function curried when all params are given.
+* _currying_ vs _partial function application_ [Wikipedia](https://en.wikipedia.org/wiki/Currying#Contrast_with_partial_function_application)
 
 ## Installation
 
@@ -60,9 +63,9 @@ Importing namespace:
    }
 ```
 
-## Examples
+## Functions
 
-#### Curry
+#### curry
 
 ```php
 function sum(int $one, int $two, int $three) : int {
@@ -82,12 +85,22 @@ $sum1(2, 3); // output: 6
 // curry with all params given
 curry(sum::class, 1, 2, 3); // output: 6
 ```
+#### curry_left
 
-Notes:
-* `curry` doesn't know if a function with optional params won't be provided. So, `curry` only runs the function curried when all params are given.
-* _currying_ vs _partial function application_ [Wikipedia](https://en.wikipedia.org/wiki/Currying#Contrast_with_partial_function_application)
+`curry_left` is an alias of `curry`.
 
-#### Pattern Matching
+#### curry_right
+
+```php
+function minus(int $one, int $two) : int {
+    return $one - $two;
+};
+
+$minus1 = curry_right('minus');
+echo $minus1(1)(4); // output: 3
+```
+
+#### match
 
 ```php
 $patterns = [

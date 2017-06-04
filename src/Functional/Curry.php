@@ -11,23 +11,28 @@ declare(strict_types = 1);
 
 namespace Martinezdelariva\Functional;
 
-/**
- * @param callable $callable
- * @param array    ...$params
- *
- * @return \Closure|mixed
- */
-function curry(callable $callable, ... $params)
-{
+function curry_side(bool $left, callable $callable, ... $params) {
     $closure = \Closure::fromCallable($callable);
     $numOfCallableParameters = (new \ReflectionFunction($closure))->getNumberOfParameters();
     $numOfCurrentParameters  = count($params);
 
     if ($numOfCallableParameters <= $numOfCurrentParameters) {
-        return $callable(... $params);
+        return $callable(... $left ? $params : array_reverse($params));
     }
 
-    return function (... $inputs) use ($callable, $params) {
-        return curry($callable, ... array_merge($params, $inputs));
+    return function (... $inputs) use ($left, $callable, $params) {
+        return curry_side($left, $callable, ... array_merge($params, $inputs));
     };
+}
+
+function curry(callable $callable, ... $params) {
+    return curry_left($callable, ... $params);
+}
+
+function curry_left(callable $callable, ... $params) {
+    return curry_side(true, $callable, ... $params);
+}
+
+function curry_right(callable $callable, ... $params) {
+    return curry_side(false, $callable, ... $params);
 }
