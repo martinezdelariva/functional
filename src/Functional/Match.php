@@ -10,31 +10,28 @@ declare(strict_types = 1);
 
 namespace Martinezdelariva\Functional;
 
-/**
- * @param array          $matching
- * @param callable|mixed $input
- *
- * @return mixed
- */
-function match(array $matching, $input)
-{
-    $return = function ($callableOrValue) use ($input) {
-        return is_callable($callableOrValue) ? $callableOrValue($input) : $callableOrValue;
+function match(array $matching = [], $input = null) {
+    $match = function (array $matching, $input) {
+        $return = function ($callableOrValue) use ($input) {
+            return is_callable($callableOrValue) ? curry($callableOrValue)($input) : $callableOrValue;
+        };
+
+        foreach ($matching as $pattern => $callable) {
+            if (is_object($input) && is_string($pattern) && is_a($input, $pattern)) {
+                return $return($callable);
+            }
+
+            if (is_scalar($input) && $pattern == $input) {
+                return $return($callable);
+            }
+
+            if (is_callable($pattern) && $pattern($input)) {
+                return $return($callable);
+            }
+        };
+
+        return (isset($matching['_'])) ? $return($matching['_']) : $input;
     };
 
-    foreach ($matching as $pattern => $callable) {
-        if (is_object($input) && is_string($pattern) && is_a($input, $pattern)) {
-            return $return($callable);
-        }
-
-        if (is_scalar($input) && $pattern == $input) {
-            return $return($callable);
-        }
-
-        if (is_callable($pattern) && $pattern($input)) {
-            return $return($callable);
-        }
-    };
-
-    return (isset($matching['_'])) ? $return($matching['_']) : $input;
+    return curry($match)(... func_get_args());
 }

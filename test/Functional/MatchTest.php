@@ -33,6 +33,30 @@ class MatchTest extends TestCase
         $this->assertEquals($object, match([], $object));
     }
 
+    /**
+     * @dataProvider matchingProvider
+     * @param mixed $expression
+     * @param array $patterns
+     * @param mixed $expected
+     */
+    public function test_is_curried($patterns, $expression, $expected)
+    {
+        $match = match($patterns);
+
+        $this->assertEquals($expected, $match($expression));
+    }
+
+    public function test_matched_callables_with_more_than_one_param_are_curried()
+    {
+        $pattern = [
+            'foo' =>  function ($one, $other) {
+                return "$one-$other";
+            }
+        ];
+
+        $this->assertEquals('foo-bar', match($pattern, 'foo')('bar'));
+    }
+
     public function matchingProvider()
     {
         $patterns = [

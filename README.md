@@ -92,6 +92,9 @@ Notes:
 ```php
 $patterns = [
     'a'              => "It's an 'a'",
+    'foo'            => function ($input, $other) {
+                            return "$input::$other";
+                        },
     'is_int'         => function ($input) {
                             return $input + 1;
                         },
@@ -99,10 +102,17 @@ $patterns = [
     '_'              => "Default"
 ];
 
-match($patterns, 'a'));              // output: "It's an 'a'"
-match($patterns, 5));                // output: 6
-match($patterns, new \stdClass()));  // output: "It's an 'stdClass'"
-match($patterns, 'unknown'));        // output: "Default"
+// provinding params
+match($patterns, 'a');          // output: "It's an 'a'"
+
+// provinding one by one param due `match` is curried
+$match = match($patterns);
+$match(5);                      // output: 6
+$match(new \stdClass());        // output: "It's an 'stdClass'"
+$match('unknown');              // output: "Default"
+
+// provinding param to callables with more params
+$match('foo')('bar');           // output: foo::bar
 ```
 
 #### Pipe
