@@ -10,8 +10,9 @@ declare(strict_types = 1);
 
 namespace Martinezdelariva\Tests\Functional;
 
-use PHPUnit\Framework\TestCase;
+use const Martinezdelariva\Functional\_;
 use function Martinezdelariva\Functional\match;
+use PHPUnit\Framework\TestCase;
 
 class MatchTest extends TestCase
 {
@@ -41,9 +42,7 @@ class MatchTest extends TestCase
      */
     public function test_is_curried($patterns, $expression, $expected)
     {
-        $match = match($patterns);
-
-        $this->assertEquals($expected, $match($expression));
+        $this->assertEquals($expected, match($patterns)($expression));
     }
 
     public function test_matched_callables_with_more_than_one_param_are_curried()
@@ -90,8 +89,8 @@ class MatchTest extends TestCase
                 return 'implement parent class!';
             },
             // default
-            '_' => function ($input) {
-                return 'default';
+            _ => function ($input) {
+                return "default: $input";
             }
         ];
 
@@ -104,7 +103,8 @@ class MatchTest extends TestCase
             [$patterns, 0.5, 'with callable key'],
             [$patterns, new TheChild(), 'with child instance'],
             [$patterns, new OtherChild(), 'implement parent class!'],
-            [$patterns, 'unknown', 'default'],
+            [$patterns, 'unknown', 'default: unknown'],
+            [$patterns, 10, 'default: 10'],
         ];
     }
 }

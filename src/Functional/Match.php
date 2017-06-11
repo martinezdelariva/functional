@@ -10,6 +10,8 @@ declare(strict_types = 1);
 
 namespace Martinezdelariva\Functional;
 
+const _ = 'Martinezdelariva\Functional\default_match';
+
 function match(array $matching = [], $input = null) {
     $match = function (array $matching, $input) {
         $return = function ($callableOrValue) use ($input) {
@@ -30,7 +32,7 @@ function match(array $matching = [], $input = null) {
             }
         };
 
-        return (isset($matching['_'])) ? $return($matching['_']) : $input;
+        return (isset($matching[_])) ? $return($matching[_]) : $input;
     };
 
     return curry($match)(... func_get_args());

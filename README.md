@@ -112,7 +112,7 @@ $patterns = [
                             return $input + 1;
                         },
     \stdClass::class => "It's an 'stdClass'",
-    '_'              => "Default"
+    _                => "Default"
 ];
 
 // provinding params
