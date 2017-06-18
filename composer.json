@@ -25,7 +25,8 @@
     "files": [
       "src/Functional/Curry.php",
       "src/Functional/Match.php",
-      "src/Functional/Pipe.php"
+      "src/Functional/Pipe.php",
+      "src/Functional/Fold.php"
     ]
   },
   "scripts" : {

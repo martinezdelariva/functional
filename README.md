@@ -7,6 +7,7 @@ Syntax enhancement operators of functional programming:
 * Curry
 * Pipe
 * Pattern Match
+* Fold
 
 At the moment there are plans to include [curry](https://wiki.php.net/rfc/currying) and [pipe](https://wiki.php.net/rfc/pipe-operator) as PHP functions.
 Meanwhile you can use this library for fun!
@@ -140,4 +141,26 @@ $format = pipe(
 );
 
 $format('  john mary andre'); // output: John, Mary, Andre
+```
+
+#### Fold 
+
+```php
+// example: using fold to sum integers
+$sum = fold(function($item, $carry) {
+   return $item + $carry;
+}, 0);
+$sum([1, 2, 3, 4]); // output 10
+
+// example: dynamically changing the fold function
+$match = match([
+   'is_string'  =>  function($item, $carry) {
+                        return $carry.$item;
+                    },
+   'is_int'     =>  function($item, $carry) {
+                        return "$carry{X}";
+                    },
+]);
+
+fold($match, '', ['a', 'b', 'c', 2, 'd', 'e']);  // output "abc{X}de"
 ```
